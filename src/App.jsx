@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import css from './App.module.css';
 import Notiflix from 'notiflix';
 import { Section } from 'components/Section/Section';
@@ -8,6 +8,8 @@ import { pixabayCard } from 'services/api';
 import { Button } from 'components/Button/Button';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Searchbar } from 'components/Searchbar/Searchbar';
+import { ButtonUp } from 'components/ButtonUp/ButtonUp';
+import { ButtonDown } from 'components/ButtonUp/ButtonDown/ButtonDown';
 
 export const App = () => {
   const [searchCards, setSearchCards] = useState([]);
@@ -63,21 +65,54 @@ export const App = () => {
     setLargeImageURL({ id: id, img: img, tags: tags });
   };
 
+  const buttonRef = useRef();
+
+  const handleScrollUp = () => {
+    const dims = buttonRef.current.getBoundingClientRect();
+    console.log(dims)
+    console.log(dims.top)
+    window.scrollTo({
+      top: dims.top,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleScrollDown = () => {
+    const dims = buttonRef.current.getBoundingClientRect();
+    console.log(dims)
+    console.log(dims.bottom)
+    window.scrollTo({
+      bottom: dims.bottom,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <Section className={css.App}>
       <Searchbar onSubmit={handleFormSubmit} />
 
+      {!isLoading && searchCards.length >= 12 && (
+        <ButtonDown onClick={handleScrollDown} />
+      )}
+
       {searchWord !== '' && (
-        <ImageGallery
-          onShowModal={showModal}
-          searchCards={searchCards}
-          onLargeImage={onLargeImage}
-        />
+        <div ref={buttonRef}>
+          <ImageGallery
+            onShowModal={showModal}
+            searchCards={searchCards}
+            onLargeImage={onLargeImage}
+          />
+        </div>
       )}
 
       {isLoading && <Loader />}
+      {!isLoading && searchCards.length >= 12 && (
+        <Button onClick={handleClickMore} />
+      )}
+      {!isLoading && searchCards.length >= 12 && (
+        <ButtonUp onClick={handleScrollUp} />
+      )}
 
-      {!isLoading && searchCards.length >= 12 && <Button onClick={handleClickMore} />}
       {isShowModal && (
         <Modal onCloseModal={closeModal} onLargeImage={largeImageURL} />
       )}
