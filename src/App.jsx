@@ -77,7 +77,7 @@ export const App = () => {
 
       {isLoading && <Loader />}
 
-      {searchCards.length >= 12 && <Button onClick={handleClickMore} />}
+      {!isLoading && searchCards.length >= 12 && <Button onClick={handleClickMore} />}
       {isShowModal && (
         <Modal onCloseModal={closeModal} onLargeImage={largeImageURL} />
       )}
