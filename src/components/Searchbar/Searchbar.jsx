@@ -16,6 +16,7 @@ export const Searchbar = ({ onSubmit }) => {
       return;
     }
     onSubmit(searchName);
+    e.target.reset();
   };
 
   return (
