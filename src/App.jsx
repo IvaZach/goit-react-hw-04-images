@@ -69,8 +69,8 @@ export const App = () => {
 
   const handleScrollUp = () => {
     const dims = buttonRef.current.getBoundingClientRect();
-    console.log(dims)
-    console.log(dims.top)
+    console.log(dims);
+    console.log(dims.top);
     window.scrollTo({
       top: dims.top,
       behavior: 'smooth',
@@ -79,10 +79,10 @@ export const App = () => {
 
   const handleScrollDown = () => {
     const dims = buttonRef.current.getBoundingClientRect();
-    console.log(dims)
-    console.log(dims.bottom)
+    console.log(dims);
+    console.log(dims.bottom);
     window.scrollTo({
-      bottom: dims.bottom,
+      top: dims.bottom,
       behavior: 'smooth',
     });
   };
@@ -104,14 +104,14 @@ export const App = () => {
           />
         </div>
       )}
-
+ {!isLoading && searchCards.length >= 12 && (
+        <ButtonUp onClick={handleScrollUp} />
+      )}
       {isLoading && <Loader />}
       {!isLoading && searchCards.length >= 12 && (
         <Button onClick={handleClickMore} />
       )}
-      {!isLoading && searchCards.length >= 12 && (
-        <ButtonUp onClick={handleScrollUp} />
-      )}
+     
 
       {isShowModal && (
         <Modal onCloseModal={closeModal} onLargeImage={largeImageURL} />
